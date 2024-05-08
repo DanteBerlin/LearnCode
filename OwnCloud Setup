@@ -1,0 +1,59 @@
+Install the LAMP stack
+sudo apt-get install lamp-server^ -y
+sudo systemctl enable --now apache2
+sudo systemctl enable --now mysql
+sudo mysql_secure_installation
+
+Create the ownCloud database
+sudo mysql -u root -p
+CREATE DATABASE ownclouddb;
+CREATE USER 'ownclouduser'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Admin@123';
+GRANT ALL PRIVILEGES ON ownclouddb.* TO 'ownclouduser'@'localhost';
+FLUSH PRIVILEGES;
+exit
+
+Install PHP
+sudo apt-get install php php-opcache php-gd php-curl php-mysqlnd php-intl php-json php-ldap php-mbstring php-mysqlnd php-xml php-zip -y
+sudo systemctl restart apache2
+
+Download and unpack ownCloud
+wget https://download.owncloud.com/server/stable/owncloud-complete-latest.zip
+unzip owncloud-complete-latest.zip
+sudo apt-get install unzip -y
+sudo mv owncloud /var/www/html
+sudo chown -R www-data: /var/www/html/owncloud
+
+Create an Apache configuration file
+sudo nano /etc/apache2/sites-available/owncloud.conf
+
+
+save in file owncloud.conf
+admin1-MS-7D48(replace with hostname)
+
+
+<VirtualHost *:80>
+
+   ServerAdmin admin1@admin1-MS-7D48.com
+
+   DocumentRoot /var/www/html/owncloud
+
+   ServerName admin1-MS-7D48.com
+
+   <><Directory /var/www/html/owncloud>
+
+   Options FollowSymlinks
+
+   AllowOverride All
+
+   Require all granted
+
+</Directory>
+
+ErrorLog ${APACHE_LOG_DIR}/admin1-MS-7D48.com_error.log
+CustomLog ${APACHE_LOG_DIR}/admin1-MS-7D48.com_access.log combined
+</VirtualHost>
+
+sudo systemctl restart apache2
+
+Open in browser
+http://admin1-MS-7D48/owncloud
