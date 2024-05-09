@@ -30,7 +30,7 @@ sudo nano /etc/apache2/sites-available/owncloud.conf
 save in file owncloud.conf
 admin1-MS-7D48(replace with hostname)
 
-
+//Paste in opened file and exit using ctrl+"Letter"
 <VirtualHost *:80>
 
    ServerAdmin admin1@admin1-MS-7D48.com
